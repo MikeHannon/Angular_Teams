@@ -13,17 +13,130 @@
 			redirectTo: '/players'
 		})
 		.when('/players', {
-			templateUrl: 'partials/players.partial.html'
+			templateUrl: 'partials/players.partial.html',
+			controller: 'playersController'
 		})
 		.when('/teams', {
-			templateUrl: 'partials/teams.partial.html'
+			templateUrl: 'partials/teams.partial.html',
+			controller: 'teamsController'
 		})
 		.when('/associations', {
-			templateUrl: 'partials/associations.partial.html'
+			templateUrl: 'partials/associations.partial.html',
+			controller: 'associationsController'
 		})
 	})
 
-	
+	myAngularObject.factory('playerFactory', function(){
+		console.log('Players Factory')
+//private variables
+	var players = ['Raul'];
+		return 	{
+			//get all players from the players variable and return it!
+			// callback is just saying: do this thing when done!
+				index : function(callback){
+					callback(players);
+				},
+				create: function(data, callback){
+					players.push(data);
+					callback();
+				},
+				delete: function(data, callback){
+					players.splice(players.indexOf(data),1);
+					callback();
+				}
+			}
+	});
+
+	myAngularObject.factory('teamFactory', function(){
+		console.log('Teams Factory')
+//private variables
+	var teams = [];
+		return 	{
+			//get all teams from the teams variable and return it!
+			// callback is just saying: do this thing when done!
+				index : function(callback){
+					callback(teams);
+				},
+				create: function(data, callback){
+					teams.push(data);
+					callback();
+				},
+				delete: function(data, callback){
+					teams.splice(teams.indexOf(data),1);
+					callback();
+				}
+			}
+	});
+
+	myAngularObject.factory('associationFactory', function(){
+		console.log('Associations Factory')
+//private variables
+	var assocations = [];
+		return 	{
+			//get all players from the players variable and return it!
+			// callback is just saying: do this thing when done!
+
+			}
+	});
+	// Controllers
+	myAngularObject.controller('playersController', function($scope, playerFactory){
+		//###STATIC VARIABLES #####//
+
+		//#####METHODS########
+		// pulls all of the players from the player factory and throws/stores (via callback) it in a scope variable called: $scope.players
+		$scope.index = function(){
+			playerFactory.index(function(data){
+				$scope.players = data;
+			});
+		}
+		$scope.create = function(data){
+			playerFactory.create(data, $scope.index);
+			if ($scope.new_player){
+				$scope.new_player = {};
+			}
+		}
+		$scope.delete = function(data){
+			playerFactory.delete(data, $scope.index);
+		}
+
+		$scope.index();
+
+	});
+
+	myAngularObject.controller('teamsController', function($scope, teamFactory){
+		//###STATIC VARIABLES #####//
+		console.log('teams controllers')
+		//#####METHODS########
+		// pulls all of the teams from the team factory and throws/stores (via callback) it in a scope variable called: $scope.teams
+		$scope.index = function(){
+			console.log('index');
+			teamFactory.index(function(data){
+				$scope.teams = data;
+			});
+		}
+		$scope.create = function(data){
+			teamFactory.create(data, $scope.index);
+			if ($scope.new_team){
+				$scope.new_team = {};
+			}
+		}
+		$scope.delete = function(data){
+			teamFactory.delete(data, $scope.index);
+		}
+
+		$scope.index();
+
+	});
+	myAngularObject.controller('associationsController', function($scope, teamFactory, playerFactory,associationFactory){
+		teamFactory.index(function(data){
+			$scope.teams = data;
+		});
+		playerFactory.index(function(data){
+			$scope.players = data;
+		});
+
+	});
+
 	</script>
 </head>
 <body>
