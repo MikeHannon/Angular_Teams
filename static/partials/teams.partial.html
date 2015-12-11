@@ -1,6 +1,6 @@
 <h1>Partial Teams</h1>
 <input type = 'text' placeholder = 'name' ng-model = 'new_team.name'>
-<button ng-click= "create(new_team.name)">New Player</button>
+<button ng-click= "create(new_team.name)">New team</button>
 <div ng-repeat = "team in teams">
   {{team}} <button ng-click = "delete(team)">Delete</button>
 </div>

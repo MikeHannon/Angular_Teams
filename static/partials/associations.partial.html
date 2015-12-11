@@ -1,1 +1,20 @@
 <h1>Partial Associations</h1>
+<!-- <select ng-model = 'new_players' ng-options = "parseInt(key) as value for (key,value) in players">
+</select> -->
+<select ng-model = 'select_player' >
+  <option ng-repeat = "player in players" value = "{{player}}" >{{player}}</option>
+</select>
+<select ng-model = 'select_team'>
+  <option>TEAM</option>
+  <option ng-repeat = "team in teams" value = "{{team}}" >{{team}}</option>
+</select>
+<button ng-click="associate(select_team,select_player)">Add Player</button>
+
+<div ng-repeat = "(team,association) in associations">
+  <h3>{{team}}</h3>
+  <div ng-repeat = 'player in association'>
+    <p ng-bind = "player"></p>
+    <button ng-click = "disassociate(team, player)">remove player</button>
+  </div>
+
+</div>

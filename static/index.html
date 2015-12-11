@@ -71,8 +71,28 @@
 	myAngularObject.factory('associationFactory', function(){
 		console.log('Associations Factory')
 //private variables
-	var assocations = [];
+	var associations = {};
+	//{team:[player1,player2,player3,player4]}
 		return 	{
+			index: function(callback){
+				callback(associations);
+			},
+			associate: function(team, player, callback){
+				if (associations[team]){
+					if (associations[team].indexOf(player) == -1){
+						associations[team].push(player);
+					}
+				}
+				else {
+					associations[team] = [player];
+				}
+				callback();
+			},
+			free_agent: function(team, player, callback){
+				if (associations[team].indexOf(player) >= 0){
+					associations[team].splice(associations[team].indexOf(player),1);
+				}
+			}
 			//get all players from the players variable and return it!
 			// callback is just saying: do this thing when done!
 
@@ -134,6 +154,21 @@
 		playerFactory.index(function(data){
 			$scope.players = data;
 		});
+		// get all of our associations:
+		$scope.index = function(){
+			associationFactory.index(function(data){
+				$scope.associations = data;
+			});
+		}
+		$scope.associate = function(team, player){
+			console.log('#############');
+			console.log(team, player);
+			console.log('#############');
+			associationFactory.associate(team,player, $scope.index);
+		}
+		$scope.disassociate = function(team, player){
+			associationFactory.free_agent(team,player, $scope.index);
+		}
 
 	});
 
